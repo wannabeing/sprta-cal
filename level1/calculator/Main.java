@@ -23,6 +23,10 @@ public class Main {
 
             // 입력 받은 사칙연산 기호에 따라 연산을 수행합니다.
             int result = calculate(firstNumber, secondNumber, operator);
+
+            // 연산 결과를 출력합니다.
+            printResult(firstNumber, secondNumber, operator, result);
+
         }
     }
 
@@ -74,5 +78,11 @@ public class Main {
                 yield 0;
             }
         };
+    }
+
+    // 결과 출력 메서드
+    private static void printResult(int firstNumber, int secondNumber, String operator, int result) {
+        System.out.println("결과 ("+ firstNumber + " " + operator + " " + secondNumber  +"): " + result);
+        System.out.println(); // 줄바꿈 추가
     }
 }
