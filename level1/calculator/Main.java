@@ -20,6 +20,9 @@ public class Main {
             // Scanner 객체를 통하여 사칙연산 기호를 입력 받습니다.
             System.out.print("사칙연산 기호를 입력하세요! (+, -, *, /): ");
             String operator = readOperator(scanner);
+
+            // 입력 받은 사칙연산 기호에 따라 연산을 수행합니다.
+            int result = calculate(firstNumber, secondNumber, operator);
         }
     }
 
@@ -51,5 +54,25 @@ public class Main {
             // 입력 값이 사칙연산 기호가 아닐 경우 다시 입력 받도록 합니다.
             System.out.print("올바른 사칙연산 기호를 입력하세요! (+, -, *, /): ");
         }
+    }
+
+    // 사칙연산 수행 메서드
+    private static int calculate(int firstNumber, int secondNumber, String operator) {
+        return switch (operator) {
+            case "+" -> firstNumber + secondNumber;
+            case "-" -> firstNumber - secondNumber;
+            case "*" -> firstNumber * secondNumber;
+            case "/" -> {
+                // 두번째 정수가 0일 경우, 예외 처리
+                if (secondNumber == 0) {
+                    System.out.println("0으로 나눌 수 없습니다. 다시 입력하세요.");
+                    yield 0;
+                }
+                yield firstNumber / secondNumber;
+            } default -> {
+                System.out.println("올바른 접근이 아닙니다.");
+                yield 0;
+            }
+        };
     }
 }
