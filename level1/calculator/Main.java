@@ -13,6 +13,13 @@ public class Main {
 
             System.out.print("두번째 숫자를 입력하세요. (exit 입력 시 종료): ");
             int secondNumber = readInt(scanner);
+
+            // 개행 문자 제거
+            scanner.nextLine();
+
+            // Scanner 객체를 통하여 사칙연산 기호를 입력 받습니다.
+            System.out.print("사칙연산 기호를 입력하세요! (+, -, *, /): ");
+            String operator = readOperator(scanner);
         }
     }
 
@@ -31,5 +38,18 @@ public class Main {
         }
         // 입력 값이 올바를 경우, 반환합니다.
         return scanner.nextInt();
+    }
+
+    // 사용자의 사칙연산 값을 검증하는 메서드
+    private static String readOperator(Scanner scanner) {
+        while (true) {
+            String operator = scanner.next();
+            // 입력 값이 사칙연산 기호일 경우 반환합니다.
+            if (operator.equals("+") || operator.equals("-") || operator.equals("*") || operator.equals("/")) {
+                return operator;
+            }
+            // 입력 값이 사칙연산 기호가 아닐 경우 다시 입력 받도록 합니다.
+            System.out.print("올바른 사칙연산 기호를 입력하세요! (+, -, *, /): ");
+        }
     }
 }
