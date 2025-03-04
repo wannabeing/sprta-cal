@@ -120,4 +120,12 @@ public class Calculator {
 
         }
     }
+
+    // ✅ 계산기 종료 메서드
+    public void exitCalculate(){
+        outputPrinter.printExitPrompt();
+
+        // 프로그램 종료
+        System.exit(0);
+    }
 }

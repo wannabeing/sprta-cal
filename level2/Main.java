@@ -25,7 +25,7 @@ public class Main {
                 case 1 -> calculator.startCalculate();
                 case 2 -> calculator.printResults();
                 case 3 -> calculator.deleteResults();
-                case 4 -> outputPrinter.printExitPrompt();
+                case 4 -> calculator.exitCalculate();
                 default -> System.out.println("올바른 번호를 입력하세요.");
             }
         }

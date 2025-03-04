@@ -48,14 +48,14 @@ public class OutputPrinter {
         }
     }
 
-    // ✅ 계산기 삭제 메뉴 출력 메서드
+    // ✅계산기 삭제 메뉴 출력 메서드
     public void printDeleteMenuPrompt(){
         System.out.println("\n📌[ 삭제 메뉴 ]");
         System.out.println("1) 최근 연산 결과 삭제 (1개)");
         System.out.println("2) 모든 연산 결과 삭제 (전체)");
     }
 
-    // ✅ 계산기 삭제 결과 출력 메서드
+    // ✅계산기 삭제 결과 출력 메서드
     public void printDeletePrompt(boolean isSuccess, Queue<Integer> results){
         if (isSuccess){
             System.out.println("\n✅ 정상적으로 삭제되었습니다.");
@@ -68,6 +68,5 @@ public class OutputPrinter {
     // ✅계산기 종료메시지 출력 메서드
     public void printExitPrompt() {
         System.out.println("\n🚀 프로그램을 종료합니다.");
-        System.exit(0);
     }
 }
