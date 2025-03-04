@@ -12,14 +12,15 @@ public class Calculator {
     // 사칙연산 기호와 Operation 객체를 매핑하는 Map 컬렉션
     private final Map<String, Operation> operations;
 
-    // 연산 결과를 저장하는 Queue 컬렉션
-    private final Queue<Integer> results;
+    // 연산 결과를 저장하는 Queue 컬렉션 생성
+    private final Queue<Integer> results = new LinkedList<>();
+
+    // InputReader, OutputPrinter 객체 생성
+    InputReader inputReader = new InputReader();
+    OutputPrinter outputPrinter = new OutputPrinter();
 
     // ✅ 생성자
     public Calculator() {
-        // 연산 결과를 저장하는 Queue 컬렉션 생성
-        results = new LinkedList<>();
-
         // FIXME: 추후 레벨 3에서 수정이 필요한 부분
         // 사칙연산 기호와 Operation 객체를 생성 및 연결
         operations = Map.of(
@@ -30,29 +31,34 @@ public class Calculator {
         );
     }
 
-    // FIXME: 누적계산에 대한 메서드 분리 필요
     // ✅ 계산기 시작 메서드
     public void startCalculate(){
-        InputReader inputReader = new InputReader();
-        OutputPrinter outputPrinter = new OutputPrinter();
-
         // 1번째 숫자 입력 받음
         outputPrinter.printNumberPrompt(1);
-        int firstNumber = inputReader.validateIntInput();
+        int initialNumber = inputReader.getIntInput();
 
-        // 중첩 연산의 경우를 위해 무한루프
+        // 연산 결과
+        int resultNumber = continueCalculate(initialNumber);
+
+        // 연산 결과 저장
+        results.add(resultNumber);
+    }
+
+    // ✅ 계산기 반복 메서드 (Calculator 객체에서만 사용)
+    private int continueCalculate(int initialNumber){
+        // 누적 연산의 경우를 위해 무한루프
         while(true){
             // 2번째 숫자 입력 받음
             outputPrinter.printNumberPrompt(2);
-            int secondNumber = inputReader.validateIntInput();
+            int secondNumber = inputReader.getIntInput();
 
             // Scanner 객체를 통하여 사칙연산 기호를 입력 받음
             outputPrinter.printOperatorPrompt();
-            String operator = inputReader.validateOperatorInput();
+            String operator = inputReader.getOperatorInput();
 
             // 연산 후, 출력
-            int result = this.calculate(operator, firstNumber, secondNumber);
-            outputPrinter.printCalculatePrompt(firstNumber, secondNumber, operator, result);
+            int result = this.executeOperation(operator, initialNumber, secondNumber);
+            outputPrinter.printCalculatePrompt(initialNumber, secondNumber, operator, result);
 
             // 연산을 계속할지 여부 체크
             outputPrinter.printContinuePrompt();
@@ -60,17 +66,16 @@ public class Calculator {
 
             // 연산을 계속할 경우, 2번째 숫자부터 받음
             // 그만둘 경우, 결과를 저장하고 루프 탈출
-            if (isContinue){
-                firstNumber = result;
+            if(isContinue) {
+               initialNumber = result;
             } else {
-                results.add(result);
-                break;
+                return result;
             }
         }
     }
 
-    // ✅ 연산 메서드
-    public int calculate(String operator, int firstNumber, int secondNumber) {
+    // ✅ 연산(계산) 메서드
+    public int executeOperation(String operator, int firstNumber, int secondNumber) {
         // 연산자에 해당하는 Operation 객체를 찾아 가져옴
         Operation operation = operations.get(operator);
 
@@ -81,34 +86,38 @@ public class Calculator {
 
         // 연산 결과를 반환
         return operation.calculate(firstNumber, secondNumber);
-
     }
 
-    // ✅ 연산 결과 반환 메서드
-    public Queue<Integer> getResults() {
-        return results;
+    // ✅ 연산 결과 출력 메서드
+    public void printResults() {
+        outputPrinter.printResultsPrompt(results);
     }
 
-    // FIXME: 미구현 메서드
-    // ✅ 연산 결과 삭제 메서드 (1개)
-    public void removeResult() {
-        if (results.isEmpty()) {
-            System.out.println("삭제할 연산 결과가 없습니다.");
+    // ✅ 연산 결과 삭제 메서드
+    public void deleteResults(){
+        if(results.isEmpty()){
+            outputPrinter.printDeletePrompt(false, results);
         } else {
-            int removedResult = results.poll();
-            System.out.println("정상적으로 삭제되었습니다.");
-            System.out.println("저장된 연산 결과: " + removedResult);
-        }
-    }
+            outputPrinter.printDeleteMenuPrompt();
 
-    // FIXME: 미구현 메서드
-    // ✅ 연산 결과 삭제 메서드 (모두)
-    public void removeResultAll() {
-        if (results.isEmpty()) {
-            System.out.println("삭제할 연산 결과가 없습니다.");
-        } else {
-            results.clear();
-            System.out.println("모든 연산 결과가 삭제되었습니다.");
+            // 삭제할 항목 선택 (1: 최근 결과 삭제, 2: 전체 결과 삭제)
+            int deleteOption = inputReader.getDeleteInput();
+
+            // 1: 최근 결과 삭제
+            if(deleteOption == 1){
+                results.poll();
+                outputPrinter.printDeletePrompt(true, results);
+            }
+            // 2: 전체 결과 삭제
+            else if (deleteOption == 2) {
+                results.clear();
+                outputPrinter.printDeletePrompt(true, results);
+            }
+            // 잘못된 입력일 경우
+            else {
+                outputPrinter.printDeletePrompt(false, results);
+            }
+
         }
     }
 }
