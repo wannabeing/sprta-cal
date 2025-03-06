@@ -1,6 +1,7 @@
 # 정수형 계산기 프로그램 🧮
 
 ##  개요
+- [📌 프로젝트 회고(velog)](https://velog.io/@wannabeing/JAVA-%EA%B3%84%EC%82%B0%EA%B8%B0-%EA%B3%BC%EC%A0%9C-%ED%9A%8C%EA%B3%A0)
 - 개발기간: 2025.02.26(목) ~ 2025.03.05(목)
 - 자바버전: OpenJDK 17
 - Java를 사용하여 구현된 콘솔 기반 계산기 프로그램
